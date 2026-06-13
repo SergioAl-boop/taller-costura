@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/pedido.dart';
 
+
 class PedidoService {
   final supabase = Supabase.instance.client;
 
@@ -59,4 +60,20 @@ class PedidoService {
     })
         .eq('id_pedido', idPedido);
   }
+
+
+  Future<Pedido?> obtenerPedidoPorCodigo(
+    String codigoPedido,
+) async {
+
+  final response = await supabase
+      .from('pedidos')
+      .select()
+      .eq('codigo_pedido', codigoPedido)
+      .maybeSingle();
+
+  if (response == null) return null;
+
+  return Pedido.fromJson(response);
+}
 }
